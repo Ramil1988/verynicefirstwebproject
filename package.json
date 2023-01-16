@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "react-icons": "^4.7.1",
+    "react-router-dom": "^6.6.2",
+    "styled-components": "^5.3.6"
+  }
+}
