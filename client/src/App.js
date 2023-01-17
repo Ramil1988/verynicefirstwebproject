@@ -9,31 +9,45 @@ import TweetDetails from "./TweetDetails";
 import GlobalStyles from "./GlobalStyles";
 import SideBar from "./Sidebar";
 import { CurrentUserContext } from "./CurrentUserContext";
+import Loading from "./CircularProgressCustom";
+
 
 const App = () => {
   const { currentUser, status } = useContext(CurrentUserContext);
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
   return (
     <>
-      <GlobalStyles />
-      <SideBarContainer>
-        <SideBar currentUser={currentUser}></SideBar>
-      </SideBarContainer>
-      <MainContainer>
-        <Routes>
-          <Route path="/" element={<HomeFeed />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/bookmarks" element={<BookMarks />} />
-          <Route path="/tweer/:tweetId" element={<TweetDetails />} />
-          <Route path="/:profileId" element={<Profile />} />
-        </Routes>
-      </MainContainer>
+      {status === "loading" ? (
+        <LoadingContainer>
+          <Loading />
+        </LoadingContainer>
+      ) : (
+        <>
+          <GlobalStyles />
+          <SideBarContainer>
+            <SideBar currentUser={currentUser}></SideBar>
+          </SideBarContainer>
+          <MainContainer>
+            <Routes>
+              <Route path="/" element={<HomeFeed />} />
+              <Route path="/notifications" element={<Notifications />} />
+              <Route path="/bookmarks" element={<BookMarks />} />
+              <Route path="/tweer/:tweetId" element={<TweetDetails />} />
+              <Route path="/:profileId" element={<Profile />} />
+            </Routes>
+          </MainContainer>
+        </>
+      )}
     </>
   );
 };
+
+const LoadingContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const SideBarContainer = styled.div`
   position: fixed;

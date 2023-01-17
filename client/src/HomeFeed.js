@@ -13,9 +13,17 @@ const HomeFeed = () => {
       });
   }, []);
 
-  console.log(tweets);
-
-  return <Tweet></Tweet>;
+  return (
+    <div>
+      {tweets &&
+        Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (
+          <Tweet key={tweetId} tweet={tweetData} />
+        ))}
+    </div>
+  );
 };
-
 export default HomeFeed;
+
+{
+  /* <Tweet tweet={tweet} key={tweet.id} /> */
+}

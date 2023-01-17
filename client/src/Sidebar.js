@@ -26,6 +26,7 @@ const SideBar = ({ currentUser }) => {
       <NavigationLink to="/bookmarks" icon={<FaBookmark />}>
         Bookmarks
       </NavigationLink>
+      <MeowButton onClick={() => console.log("click")}>Meow</MeowButton>
     </>
   );
 };
@@ -52,6 +53,7 @@ const NavigationLinkWrapper = styled.div`
   font-size: 20px;
   font-weight: bold;
   border-radius: 20px;
+  margin: 15px;
 
   transition: background-color 0.2s;
   ${(props) =>
@@ -78,5 +80,18 @@ const NavigationLinkIcon = styled.div`
   margin-right: 10px;
 `;
 const NavigationLinkText = styled.div``;
+
+const MeowButton = styled.button`
+  text-align: center;
+  padding: 10px;
+  width: 180px;
+  margin: 15px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: ${COLORS.primary};
+  border-radius: 20px;
+  border: none;
+`;
 
 export default SideBar;
