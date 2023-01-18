@@ -53,7 +53,7 @@ const NavigationLinkWrapper = styled.div`
   font-size: 20px;
   font-weight: bold;
   border-radius: 20px;
-  margin: 15px;
+  margin: 20px;
 
   transition: background-color 0.2s;
   ${(props) =>
@@ -85,7 +85,8 @@ const MeowButton = styled.button`
   text-align: center;
   padding: 10px;
   width: 180px;
-  margin: 15px;
+  margin: 10px;
+
   color: white;
   font-weight: bold;
   font-size: 18px;

@@ -5,12 +5,13 @@ import BookMarks from "./Bookmarks";
 import HomeFeed from "./HomeFeed";
 import Notifications from "./Notifications";
 import Profile from "./Profile";
+import Media from "./Media";
+import Likes from "./Likes";
 import TweetDetails from "./TweetDetails";
 import GlobalStyles from "./GlobalStyles";
 import SideBar from "./Sidebar";
 import { CurrentUserContext } from "./CurrentUserContext";
 import Loading from "./CircularProgressCustom";
-
 
 const App = () => {
   const { currentUser, status } = useContext(CurrentUserContext);
@@ -22,7 +23,7 @@ const App = () => {
           <Loading />
         </LoadingContainer>
       ) : (
-        <>
+        <MainWrapper>
           <GlobalStyles />
           <SideBarContainer>
             <SideBar currentUser={currentUser}></SideBar>
@@ -34,13 +35,20 @@ const App = () => {
               <Route path="/bookmarks" element={<BookMarks />} />
               <Route path="/tweer/:tweetId" element={<TweetDetails />} />
               <Route path="/:profileId" element={<Profile />} />
+              <Route path="/:profileId/media" element={<Media />} />
+              <Route path="/:profileId/likes" element={<Likes />} />
             </Routes>
           </MainContainer>
-        </>
+        </MainWrapper>
       )}
     </>
   );
 };
+
+const MainWrapper = styled.div`
+  width: 100vw;
+  display: flex;
+`;
 
 const LoadingContainer = styled.div`
   position: absolute;
@@ -50,23 +58,16 @@ const LoadingContainer = styled.div`
 `;
 
 const SideBarContainer = styled.div`
-  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 250px;
+  width: 15vw;
+  margin-left: 20px;
+  margin-top: 20px;
 `;
 
 const MainContainer = styled.div`
-  margin-left: 250px;
+  max-width: 900px;
 `;
 
 export default App;
-
-// const [name, setName] = useState();
-
-// useEffect(() => {
-//   fetch("./api/me/profile")
-//     .then((response) => response.json())
-//     .then((data) => setName(data.profile.bio));
-// }, []);

@@ -44,8 +44,12 @@ const TweetWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 10px;
-  width: 50%;
+  padding: 15px;
+
+  width: 100%;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
 `;
 
 const UserWrapper = styled.div`
@@ -92,16 +96,15 @@ const Nickname = styled(TweetDate)`
 `;
 
 const TweetText = styled.p`
-  margin: 5px 0;
   font-size: 18px;
   width: 100%;
 `;
 
 const TweetImg = styled.img`
   width: 100%;
-
-  height: auto;
+  height: 600px;
   border-radius: 10px;
+  object-fit: cover;
 `;
 
 export default Tweet;

@@ -6,7 +6,7 @@ export default createGlobalStyle`
   }
 
   div {
-    margin: 5px;
+    /* margin: 5px; */
     padding: 0;
     border: 0;
     vertical-align: baseline;

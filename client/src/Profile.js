@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
+import Tweet from "./Tweet";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { COLORS } from "./constants";
 
 import moment from "moment";
 
 const Profile = () => {
-  const { currentUser, status } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
 
   return (
     <ProfileWrapper>
@@ -54,7 +56,8 @@ const Profile = () => {
 const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 100%;
+  max-width: 900px;
 `;
 
 const LocationJoinDateWrapper = styled.div`
@@ -63,7 +66,7 @@ const LocationJoinDateWrapper = styled.div`
 
 const LocationWrapper = styled.div`
   display: flex;
-  margin-right: 15px;
+  
 `;
 
 const JoinDateWrapper = styled(LocationWrapper)``;
@@ -163,6 +166,25 @@ const Following = styled(Followers)``;
 
 const BarSection = () => {
   const [activeBar, setActiveBar] = useState("Tweets");
+  const navigate = useNavigate();
+
+  const { profileId } = useParams();
+
+  const [tweets, setTweets] = useState();
+
+  useEffect(() => {
+    fetch(`/api/${profileId}/feed`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTweets(data);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   if (activeBar !== "Tweets") {
+  //     navigate(`/${profileId}/${activeBar.toLowerCase()}`);
+  //   }
+  // }, [activeBar, navigate]);
 
   const handleBarClick = (bar) => {
     setActiveBar(bar);
@@ -193,6 +215,12 @@ const BarSection = () => {
       <LineWrapper active={activeBar}>
         <Line />
       </LineWrapper>
+      <Tweets>
+        {tweets &&
+          Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (
+            <Tweet key={tweetId} tweet={tweetData} />
+          ))}
+      </Tweets>
     </>
   );
 };
@@ -200,13 +228,15 @@ const BarSection = () => {
 const BarWrapper = styled.div`
   display: flex;
   width: 100%;
+  padding: 15px;
 `;
 
 const BarText = styled.div`
   flex: 1;
   text-align: center;
   font-weight: bold;
-  padding: 10px 0;
+  font-size: 25px;
+  padding: 15px;
   color: ${({ active }) => (active ? "hsl(258deg, 100%, 50%)" : "black")};
   cursor: pointer;
   &:hover {
@@ -230,6 +260,12 @@ const LineWrapper = styled.div`
   }
 `;
 
-const Line = styled.div``;
+const Tweets = styled.div`
+  width: 100%;
+`;
+
+const Line = styled.div`
+  width: 150%;
+`;
 
 export default Profile;
