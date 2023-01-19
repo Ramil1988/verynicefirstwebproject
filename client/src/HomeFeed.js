@@ -14,10 +14,18 @@ const HomeFeed = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch("/api/me/home-feed")
+      .then((res) => res.json())
+      .then((data) => {
+        setTweets(data);
+      });
+  }, [tweets]);
+
   return (
     <>
       <h1>Home</h1>
-      <CreateTweet />
+      <CreateTweet tweets={tweets} setTweets={setTweets} />
       <div>
         {tweets &&
           Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (

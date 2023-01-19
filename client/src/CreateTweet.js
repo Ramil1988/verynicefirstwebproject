@@ -1,12 +1,29 @@
-import { useContext, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import styled from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { COLORS } from "./constants";
 
-const CreateTweet = () => {
+const initialState = {
+  loading: false,
+};
+
+function tweetReducer(state = initialState, action) {
+  switch (action.type) {
+    case "SUBMIT_TWEET":
+      return { ...state, loading: true };
+    case "TWEET_SUBMITTED":
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+}
+
+const CreateTweet = (props) => {
+  const { tweets, setTweets } = props;
   const [tweet, setTweet] = useState("");
   const { currentUser } = useContext(CurrentUserContext);
   const [tweetLength, setTweetLength] = useState(0);
+  const [state, dispatch] = useReducer(tweetReducer, initialState);
 
   const handleChange = (e) => {
     setTweet(e.target.value);
@@ -15,9 +32,24 @@ const CreateTweet = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitting tweet:", tweet);
+    dispatch({ type: "SUBMIT_TWEET" });
+    fetch("/api/tweet", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: tweet }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTweets(tweets ? tweets : data);
+        setTweet("");
+        dispatch({ type: "TWEET_SUBMITTED" });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
   return (
     <MainWrapper>
       <CreateTweetWrapper>
@@ -27,14 +59,28 @@ const CreateTweet = () => {
         <TextAreaWrapper>
           <TextArea
             placeholder="What's happening?"
-            value={tweet}
             onChange={handleChange}
+            value={tweet}
           />
         </TextAreaWrapper>
       </CreateTweetWrapper>
       <ButtonAndCounterWrapper>
-        <TweetLength>{280 -tweetLength}</TweetLength>
-        <MeowButton onClick={handleSubmit}>Tweet</MeowButton>
+        <TweetLength length={280 - tweetLength}>
+          {280 - tweetLength}
+        </TweetLength>
+        {state.loading ? (
+          <Spinner />
+        ) : (
+          <MeowButton
+            onClick={handleSubmit}
+            disabled={tweetLength > 280}
+            style={{
+              backgroundColor: tweetLength > 280 ? "gray" : COLORS.primary,
+            }}
+          >
+            Meow
+          </MeowButton>
+        )}
       </ButtonAndCounterWrapper>
     </MainWrapper>
   );
@@ -95,7 +141,8 @@ const ButtonAndCounterWrapper = styled.div`
 `;
 
 const TweetLength = styled.p`
-  color: gray;
+  color: ${(props) =>
+    props.length > 60 ? "gray" : props.length > 0 ? "yellowgreen" : "red"};
   margin: 20px;
 `;
 
@@ -113,8 +160,41 @@ const MeowButton = styled.button`
   border: none;
 
   cursor: pointer;
+  pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   &:hover {
     transform: scale(1.2);
+  }
+`;
+const Spinner = () => {
+  return (
+    <SpinnerContainer>
+      <SpinnerCircle />
+    </SpinnerContainer>
+  );
+};
+
+const SpinnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const SpinnerCircle = styled.div`
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 
