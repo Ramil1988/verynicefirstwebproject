@@ -1,8 +1,23 @@
 import styled from "styled-components";
+import { useState } from "react";
 
-import { FaRegComment, FaRetweet, FaRegHeart, FaUpload } from "react-icons/fa";
+import {
+  FaRegComment,
+  FaRetweet,
+  FaHeart,
+  FaRegHeart,
+  FaUpload,
+} from "react-icons/fa";
 
-const TweetIcons = () => {
+const TweetIcons = ({ tweet }) => {
+  const [liked, setLiked] = useState(false);
+  const [clicked, setClicked] = useState(0);
+
+  const handleClick = () => {
+    setLiked(!liked);
+    setClicked(clicked === 0 ? 1 : 0);
+  };
+
   return (
     <IconsWrapper>
       <Button>
@@ -11,8 +26,11 @@ const TweetIcons = () => {
       <Button>
         <FaRetweet />
       </Button>
-      <Button>
-        <FaRegHeart />
+      <Button onClick={handleClick}>
+        <Wrapper>
+          {!liked ? <FaRegHeart color="black" /> : <FaHeart color="red" />}
+          {clicked !== 0 && <TimesClick>{clicked}</TimesClick>}
+        </Wrapper>
       </Button>
       <Button>
         <FaUpload />
@@ -28,6 +46,11 @@ const IconsWrapper = styled.div`
   margin-top: 10px;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Button = styled.button`
   background: transparent;
   border: none;
@@ -37,6 +60,14 @@ const Button = styled.button`
   &:hover {
     transform: scale(1.2);
   }
+`;
+
+const TimesClick = styled.p`
+  color: gray;
+  padding-left: 40px;
+  font-size: 25px;
+  position: absolute;
+  display: ${(props) => (props.clicked === 0 ? "none" : "block")};
 `;
 
 export default TweetIcons;

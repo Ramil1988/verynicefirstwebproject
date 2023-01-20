@@ -5,6 +5,7 @@ import CreateTweet from "./CreateTweet";
 
 const HomeFeed = () => {
   const [tweets, setTweets] = useState();
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     fetch("/api/me/home-feed")
@@ -12,24 +13,20 @@ const HomeFeed = () => {
       .then((data) => {
         setTweets(data);
       });
-  }, []);
-
-  useEffect(() => {
-    fetch("/api/me/home-feed")
-      .then((res) => res.json())
-      .then((data) => {
-        setTweets(data);
-      });
-  }, [tweets]);
+  }, [reload]);
 
   return (
     <>
       <h1>Home</h1>
-      <CreateTweet tweets={tweets} setTweets={setTweets} />
+      <CreateTweet
+        tweets={tweets}
+        setTweets={setTweets}
+        setReload={setReload}
+      />
       <div>
         {tweets &&
-          Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (
-            <Tweet key={tweetId} tweet={tweetData} />
+          tweets.tweetIds.map((tweetId) => (
+            <Tweet key={tweetId} tweet={tweets.tweetsById[tweetId]} />
           ))}
       </div>
     </>

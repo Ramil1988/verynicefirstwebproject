@@ -10,41 +10,60 @@ import moment from "moment";
 
 const Profile = () => {
   const { currentUser } = useContext(CurrentUserContext);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const { profileId } = useParams();
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/${profileId}/profile`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+        setLoading(false);
+      });
+  }, [profileId]);
+
+  if (loading) {
+    return <h1>Loading</h1>;
+  }
+
+    console.log(user);
 
   return (
     <ProfileWrapper>
-      <Banner src={currentUser["profile"].bannerSrc} alt="Profile Banner" />
+      <Banner src={user["profile"].bannerSrc} alt="Profile Banner" />
       <AvatarAndButtonContainer>
         <AvatarContainer>
-          <Avatar src={currentUser["profile"].avatarSrc} alt="Profile Avatar" />
+          <Avatar src={user["profile"].avatarSrc} alt="Profile Avatar" />
         </AvatarContainer>
         <FollowingButton>Following</FollowingButton>
       </AvatarAndButtonContainer>
       <UserInfo>
-        <Name>{currentUser["profile"].displayName}</Name>
-        <Nickname>@{currentUser["profile"].handle}</Nickname>
-        <Bio>{currentUser["profile"].bio}</Bio>
+        <Name>{user["profile"].displayName}</Name>
+        <Nickname>@{user["profile"].handle}</Nickname>
+        <Bio>{user["profile"].bio}</Bio>
         <LocationJoinDateWrapper>
           <LocationWrapper>
             <Location>
               <LocationIcon />
-              {currentUser["profile"].location}
+              {user["profile"].location}
             </Location>
           </LocationWrapper>
           <JoinDateWrapper>
             <JoinDate>
               <JoinDateIcon />
-              Joined{" "}
-              {moment(`${currentUser["profile"].joined}`).format("MMMM YYYY")}
+              Joined {moment(`${user["profile"].joined}`).format("MMMM YYYY")}
             </JoinDate>
           </JoinDateWrapper>
         </LocationJoinDateWrapper>
         <FollowsArea>
           <Followers>
-            <span>{currentUser["profile"].numFollowers}</span>Followers
+            <span>{user["profile"].numFollowers}</span>Followers
           </Followers>
           <Following>
-            <span>{currentUser["profile"].numFollowing}</span> Following
+            <span>{user["profile"].numFollowing}</span> Following
           </Following>
         </FollowsArea>
       </UserInfo>
@@ -66,7 +85,6 @@ const LocationJoinDateWrapper = styled.div`
 
 const LocationWrapper = styled.div`
   display: flex;
-  
 `;
 
 const JoinDateWrapper = styled(LocationWrapper)``;

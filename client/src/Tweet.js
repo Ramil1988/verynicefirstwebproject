@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import TweetIcons from "./TweetIcons";
 import moment from "moment";
 
 const Tweet = ({ tweet }) => {
-  const [tweets, setTweets] = useState();
-
   moment("2021-07-14T00:00:00.000Z").utc().format("YYYY-MM-DD");
-
-  useEffect(() => {
-    fetch("/api/me/home-feed")
-      .then((res) => res.json())
-      .then((data) => {
-        setTweets(data);
-      });
-  }, []);
 
   return (
     <TweetWrapper>
-      <UserWrapper>
+      <UserWrapper to={`/${tweet["author"].handle}`}>
         <UserLogo src={tweet["author"].avatarSrc} alt="User logo" />
         <UserName>{tweet["author"].displayName}</UserName>
         <UserInfo>
@@ -35,7 +26,7 @@ const Tweet = ({ tweet }) => {
           <TweetImg src={tweet.media[0].url} alt="Tweet Image" />
         )}
       </TweetTextImageWrapper>
-      <TweetIcons />
+      <TweetIcons tweet={tweet} />
     </TweetWrapper>
   );
 };
@@ -52,7 +43,8 @@ const TweetWrapper = styled.div`
   border-right: 1px solid lightgray;
 `;
 
-const UserWrapper = styled.div`
+const UserWrapper = styled(NavLink)`
+  text-decoration: none;
   display: flex;
   align-items: center;
 `;

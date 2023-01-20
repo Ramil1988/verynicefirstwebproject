@@ -19,7 +19,7 @@ function tweetReducer(state = initialState, action) {
 }
 
 const CreateTweet = (props) => {
-  const { tweets, setTweets } = props;
+  const { tweets, setTweets, setReload } = props;
   const [tweet, setTweet] = useState("");
   const { currentUser } = useContext(CurrentUserContext);
   const [tweetLength, setTweetLength] = useState(0);
@@ -44,6 +44,7 @@ const CreateTweet = (props) => {
       .then((data) => {
         setTweets(tweets ? tweets : data);
         setTweet("");
+        setReload((prev) => !prev);
         dispatch({ type: "TWEET_SUBMITTED" });
       })
       .catch((error) => {
@@ -91,6 +92,8 @@ const MainWrapper = styled.div`
   width: 100%;
   flex-direction: column;
   border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
   border-bottom: 5px solid gray;
   padding: 15px;
 `;
