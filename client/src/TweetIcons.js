@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
   FaRegComment,
@@ -12,10 +12,36 @@ import {
 const TweetIcons = ({ tweet }) => {
   const [liked, setLiked] = useState(false);
   const [clicked, setClicked] = useState(0);
+  const [tweets, setTweets] = useState();
 
-  const handleClick = () => {
+  useEffect(() => {
+    fetch("/api/me/home-feed")
+      .then((res) => res.json())
+      .then((data) => {
+        setTweets(data);
+      });
+  }, [clicked]);
+
+  const handleClick = (e) => {
+    e.preventDefault();
     setLiked(!liked);
     setClicked(clicked === 0 ? 1 : 0);
+    // tweet.numLikes = clicked;
+
+    // fetch("/api/tweet/:tweetId/like", {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ like: true }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(tweets);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
 
   return (

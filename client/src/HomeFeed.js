@@ -26,7 +26,11 @@ const HomeFeed = () => {
       <div>
         {tweets &&
           tweets.tweetIds.map((tweetId) => (
-            <Tweet key={tweetId} tweet={tweets.tweetsById[tweetId]} />
+            <Tweet
+              key={tweetId}
+              tweetId={tweetId}
+              tweet={tweets.tweetsById[tweetId]}
+            />
           ))}
       </div>
     </>

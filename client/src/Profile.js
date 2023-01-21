@@ -9,7 +9,6 @@ import { COLORS } from "./constants";
 import moment from "moment";
 
 const Profile = () => {
-  const { currentUser } = useContext(CurrentUserContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,8 +28,7 @@ const Profile = () => {
     return <h1>Loading</h1>;
   }
 
-    console.log(user);
-
+  
   return (
     <ProfileWrapper>
       <Banner src={user["profile"].bannerSrc} alt="Profile Banner" />
@@ -45,18 +43,22 @@ const Profile = () => {
         <Nickname>@{user["profile"].handle}</Nickname>
         <Bio>{user["profile"].bio}</Bio>
         <LocationJoinDateWrapper>
-          <LocationWrapper>
-            <Location>
-              <LocationIcon />
-              {user["profile"].location}
-            </Location>
-          </LocationWrapper>
-          <JoinDateWrapper>
-            <JoinDate>
-              <JoinDateIcon />
-              Joined {moment(`${user["profile"].joined}`).format("MMMM YYYY")}
-            </JoinDate>
-          </JoinDateWrapper>
+          {user["profile"].location && (
+            <LocationWrapper>
+              <Location>
+                <LocationIcon />
+                {user["profile"].location}
+              </Location>
+            </LocationWrapper>
+          )}
+          {user["profile"].joined && (
+            <JoinDateWrapper>
+              <JoinDate>
+                <JoinDateIcon />
+                Joined {moment(`${user["profile"].joined}`).format("MMMM YYYY")}
+              </JoinDate>
+            </JoinDateWrapper>
+          )}
         </LocationJoinDateWrapper>
         <FollowsArea>
           <Followers>
@@ -85,6 +87,7 @@ const LocationJoinDateWrapper = styled.div`
 
 const LocationWrapper = styled.div`
   display: flex;
+  margin: 5px;
 `;
 
 const JoinDateWrapper = styled(LocationWrapper)``;

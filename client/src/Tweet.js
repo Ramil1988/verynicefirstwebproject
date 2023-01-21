@@ -1,29 +1,36 @@
-import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import TweetIcons from "./TweetIcons";
+import Spinner from "./Spinner";
 import moment from "moment";
 
-const Tweet = ({ tweet }) => {
+const Tweet = (props) => {
+  const { tweetId, tweet } = props;
   moment("2021-07-14T00:00:00.000Z").utc().format("YYYY-MM-DD");
+
+  if (Object.keys(tweet).length === 0) {
+    return <Spinner />;
+  }
 
   return (
     <TweetWrapper>
-      <UserWrapper to={`/${tweet["author"].handle}`}>
-        <UserLogo src={tweet["author"].avatarSrc} alt="User logo" />
-        <UserName>{tweet["author"].displayName}</UserName>
+      <UserWrapper
+        to={tweet["author"]?.handle ? `/${tweet["author"].handle}` : "#"}
+      >
+        <UserLogo src={tweet["author"]?.avatarSrc} alt="User logo" />
+        <UserName>{tweet["author"]?.displayName}</UserName>
         <UserInfo>
-          <Nickname>@{tweet["author"].handle}</Nickname>
+          <Nickname>@{tweet["author"]?.handle}</Nickname>
           <Separator>•</Separator>
           <TweetDate>
             {moment(`${tweet.timestamp}`).format("MMM D YYYY")}
           </TweetDate>
         </UserInfo>
       </UserWrapper>
-      <TweetTextImageWrapper>
+      <TweetTextImageWrapper to={`/tweet/${tweetId}`}>
         <TweetText>{tweet.status}</TweetText>
-        {tweet.media[0] && tweet.media[0].url && (
-          <TweetImg src={tweet.media[0].url} alt="Tweet Image" />
+        {tweet?.media && tweet?.media[0] && tweet?.media[0]?.url && (
+          <TweetImg src={tweet?.media[0]?.url} alt="Tweet Image" />
         )}
       </TweetTextImageWrapper>
       <TweetIcons tweet={tweet} />
@@ -49,7 +56,8 @@ const UserWrapper = styled(NavLink)`
   align-items: center;
 `;
 
-const TweetTextImageWrapper = styled.div`
+const TweetTextImageWrapper = styled(NavLink)`
+  text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;

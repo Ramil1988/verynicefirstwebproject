@@ -33,7 +33,7 @@ const App = () => {
               <Route path="/" element={<HomeFeed />} />
               <Route path="/notifications" element={<Notifications />} />
               <Route path="/bookmarks" element={<BookMarks />} />
-              <Route path="/tweer/:tweetId" element={<TweetDetails />} />
+              <Route path="/tweet/:tweetId" element={<TweetDetails />} />
               <Route path="/:profileId" element={<Profile />} />
               <Route path="/:profileId/media" element={<Media />} />
               <Route path="/:profileId/likes" element={<Likes />} />
