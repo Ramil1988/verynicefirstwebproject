@@ -37,7 +37,3 @@ const HomeFeed = () => {
   );
 };
 export default HomeFeed;
-
-{
-  /* <Tweet tweet={tweet} key={tweet.id} /> */
-}

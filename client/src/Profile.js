@@ -1,8 +1,9 @@
-import { useContext, useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { CurrentUserContext } from "./CurrentUserContext";
+
 import Tweet from "./Tweet";
+import Spinner from "./Spinner";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { COLORS } from "./constants";
 
@@ -25,10 +26,9 @@ const Profile = () => {
   }, [profileId]);
 
   if (loading) {
-    return <h1>Loading</h1>;
+    return <Spinner />;
   }
 
-  
   return (
     <ProfileWrapper>
       <Banner src={user["profile"].bannerSrc} alt="Profile Banner" />
@@ -187,10 +187,7 @@ const Following = styled(Followers)``;
 
 const BarSection = () => {
   const [activeBar, setActiveBar] = useState("Tweets");
-  const navigate = useNavigate();
-
   const { profileId } = useParams();
-
   const [tweets, setTweets] = useState();
 
   useEffect(() => {
@@ -239,7 +236,7 @@ const BarSection = () => {
       <Tweets>
         {tweets &&
           Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (
-            <Tweet key={tweetId} tweet={tweetData} />
+            <Tweet key={tweetId} tweetId={tweetId} tweet={tweetData} />
           ))}
       </Tweets>
     </>
