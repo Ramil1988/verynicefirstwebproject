@@ -1,8 +1,11 @@
-import { useContext, useReducer, useState } from "react";
-import styled from "styled-components";
+import { Dialog } from "@material-ui/core";
+import { useState } from "react";
+import { useContext } from "react";
 import { CurrentUserContext } from "./CurrentUserContext";
+import styled from "styled-components";
+import { useReducer } from "react";
 import { COLORS } from "./constants";
-import Spinner from "./Spinner";
+import Loading from "./Spinner";
 
 const initialState = {
   loading: false,
@@ -19,8 +22,10 @@ function tweetReducer(state = initialState, action) {
   }
 }
 
-const CreateTweet = (props) => {
-  const { tweets, setTweets, setReload, currentUser } = useContext(CurrentUserContext)
+const TweetDialog = (props) => {
+  const { currentUser, tweets, setTweets, reload, setReload } =
+    useContext(CurrentUserContext);
+  const { open, onClose } = props;
   const [tweet, setTweet] = useState("");
   const [tweetLength, setTweetLength] = useState(0);
   const [state, dispatch] = useReducer(tweetReducer, initialState);
@@ -45,6 +50,7 @@ const CreateTweet = (props) => {
         setTweets(tweets ? tweets : data);
         setTweet("");
         setReload((prev) => !prev);
+        onClose();
         dispatch({ type: "TWEET_SUBMITTED" });
       })
       .catch((error) => {
@@ -52,74 +58,64 @@ const CreateTweet = (props) => {
       });
   };
 
-  if (!currentUser) {
-    return <Spinner />;
-  }
-
   return (
-    <MainWrapper>
-      <CreateTweetWrapper>
+    <TweetDialogWrapper>
+      <Dialog open={open} onClose={onClose}>
         <AvatarWrapper>
           <Avatar src={currentUser["profile"].avatarSrc} alt="user avatar" />
+          <p>Everyone ↓</p>
         </AvatarWrapper>
-        <TextAreaWrapper>
-          <TextArea
-            placeholder="What's happening?"
-            onChange={handleChange}
+        <DialogContent>
+          <TextFieldWrapper
+            multiline
+            variant="outlined"
+            fullWidth
             value={tweet}
+            onChange={handleChange}
+            placeholder="What's happening?"
           />
-        </TextAreaWrapper>
-      </CreateTweetWrapper>
-      <ButtonAndCounterWrapper>
-        <TweetLength length={280 - tweetLength}>
-          {280 - tweetLength}
-        </TweetLength>
-        {state.loading ? (
-          <Spinner />
-        ) : (
-          <MeowButton
-            onClick={handleSubmit}
-            disabled={tweetLength > 280}
-            style={{
-              backgroundColor: tweetLength > 280 ? "gray" : COLORS.primary,
-            }}
-          >
-            Meow
-          </MeowButton>
-        )}
-      </ButtonAndCounterWrapper>
-    </MainWrapper>
+          <ButtonAndCounterWrapper>
+            <TweetLength length={280 - tweetLength}>
+              {280 - tweetLength}
+            </TweetLength>
+            {state.loading ? (
+              <Loading />
+            ) : (
+              <PostTweetButton
+                onClick={handleSubmit}
+                disabled={tweetLength > 280}
+                style={{
+                  backgroundColor: tweetLength > 280 ? "gray" : COLORS.primary,
+                }}
+              >
+                Meow
+              </PostTweetButton>
+            )}
+          </ButtonAndCounterWrapper>
+        </DialogContent>
+      </Dialog>
+    </TweetDialogWrapper>
   );
 };
 
-const MainWrapper = styled.div`
+const TweetDialogWrapper = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
-  border-bottom: 5px solid gray;
-  padding: 15px;
-`;
-
-const CreateTweetWrapper = styled.div`
-  display: flex;
-  height: 150px;
 `;
 
 const AvatarWrapper = styled.div`
-  display: flex;
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
+  margin-top: 30px;
+  margin-left: 20px;
+  display: flex;
 
-  margin-right: 10px;
-`;
-
-const TextAreaWrapper = styled.div`
-  flex: 1;
-  margin-right: 10px;
+  & p {
+    color: black;
+    margin-left: 15px;
+    border: 2px solid black;
+    padding: 4px;
+    border-radius: 5px;
+  }
 `;
 
 const Avatar = styled.img`
@@ -130,13 +126,20 @@ const Avatar = styled.img`
   align-self: flex-start;
 `;
 
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 80%;
+const DialogContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+`;
+
+const TextFieldWrapper = styled.textarea`
+  padding: 100px;
+  width: 500px;
+  height: 150px;
   resize: none;
   border: none;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 20px;
   font-size: 20px;
   &:focus {
     outline: none;
@@ -155,19 +158,18 @@ const TweetLength = styled.p`
   margin: 20px;
 `;
 
-const MeowButton = styled.button`
-  text-align: center;
-  padding: 10px;
-  width: 100px;
-  margin: 10px;
-  margin-left: auto;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
+const PostTweetButton = styled.button`
   background-color: ${COLORS.primary};
-  border-radius: 20px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 100px;
   border: none;
-
+  outline: none;
+  margin: 12px;
+  margin-left: auto;
+  align-self: flex-end;
   cursor: pointer;
   pointer-events: ${(props) => (props.disabled ? "none" : "auto")};
   &:hover {
@@ -175,4 +177,4 @@ const MeowButton = styled.button`
   }
 `;
 
-export default CreateTweet;
+export default TweetDialog;

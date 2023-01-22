@@ -9,6 +9,7 @@ export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [status, setStatus] = useState("loading");
   const [tweets, setTweets] = useState();
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     fetch("/api/me/profile")
@@ -28,7 +29,9 @@ export const CurrentUserProvider = ({ children }) => {
   }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, status, tweets }}>
+    <CurrentUserContext.Provider
+      value={{ currentUser, status, tweets, setTweets, reload, setReload }}
+    >
       {children}
     </CurrentUserContext.Provider>
   );

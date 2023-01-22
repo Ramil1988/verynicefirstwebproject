@@ -12,7 +12,7 @@ import {
 const TweetIcons = ({ tweet }) => {
   const [liked, setLiked] = useState(false);
   const [clicked, setClicked] = useState(0);
-  const [tweets, setTweets] = useState();
+  const [setTweets] = useState();
 
   useEffect(() => {
     fetch("/api/me/home-feed")

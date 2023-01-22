@@ -1,11 +1,5 @@
 const BookMarks = () => {
-  return (
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-    </ul>
-  );
+  return <h1>Bookmarks</h1>;
 };
 
 export default BookMarks;

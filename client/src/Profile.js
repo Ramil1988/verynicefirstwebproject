@@ -104,6 +104,7 @@ const JoinDateWrapper = styled(LocationWrapper)``;
 const Banner = styled.img`
   width: 100%;
   height: 200px;
+  object-fit: cover;
 `;
 
 const AvatarAndButtonContainer = styled.div`
@@ -252,8 +253,12 @@ const BarSection = () => {
       </LineWrapper>
       <Tweets>
         {tweets &&
-          Object.entries(tweets.tweetsById).map(([tweetId, tweetData]) => (
-            <Tweet key={tweetId} tweetId={tweetId} tweet={tweetData} />
+          tweets.tweetIds.map((tweetId) => (
+            <Tweet
+              key={tweetId}
+              tweetId={tweetId}
+              tweet={tweets.tweetsById[tweetId]}
+            />
           ))}
       </Tweets>
     </>

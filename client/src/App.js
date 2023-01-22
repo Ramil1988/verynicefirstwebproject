@@ -12,14 +12,9 @@ import GlobalStyles from "./GlobalStyles";
 import SideBar from "./Sidebar";
 import { CurrentUserContext } from "./CurrentUserContext";
 import Loading from "./CircularProgressCustom";
-import ErrorScreen from "./ErrorScreen";
 
 const App = () => {
   const { currentUser, status } = useContext(CurrentUserContext);
-
-  if (!currentUser) {
-    return <ErrorScreen />;
-  }
 
   return (
     <>
@@ -53,11 +48,10 @@ const App = () => {
 const MainWrapper = styled.div`
   width: 100vw;
   display: flex;
-`;
 
-const WrapperFoRSpinner = styled.div`
-  margin-left: auto;
-  margin-right: auto;
+  @media (max-width: 1200px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const LoadingContainer = styled.div`
@@ -68,16 +62,24 @@ const LoadingContainer = styled.div`
 `;
 
 const SideBarContainer = styled.div`
+  width: 15%;
   top: 0;
   left: 0;
   bottom: 0;
   width: 15vw;
   margin-left: 20px;
   margin-top: 20px;
+
+  @media (max-width: 1200) {
+    width: 100%;
+    margin-left: 0;
+  }
 `;
 
 const MainContainer = styled.div`
+  width: 85%;
   max-width: 900px;
+  margin-left: 50px;
 `;
 
 export default App;

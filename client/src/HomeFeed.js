@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { useContext } from "react";
 
 import Tweet from "./Tweet";
 import CreateTweet from "./CreateTweet";
 import ErrorScreen from "./ErrorScreen";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const HomeFeed = () => {
-  const [tweets, setTweets] = useState();
-  const [reload, setReload] = useState(false);
+  const { tweets, setTweets, reload } = useContext(CurrentUserContext);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -27,11 +28,7 @@ const HomeFeed = () => {
   return (
     <>
       <h1>Home</h1>
-      <CreateTweet
-        tweets={tweets}
-        setTweets={setTweets}
-        setReload={setReload}
-      />
+      <CreateTweet />
       <div>
         {tweets &&
           tweets.tweetIds.map((tweetId) => (

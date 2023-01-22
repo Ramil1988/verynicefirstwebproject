@@ -5,9 +5,11 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 
 import { FaHome, FaUser, FaBell, FaBookmark } from "react-icons/fa";
+import TweetDialog from "./TweetDialog";
 
 const SideBar = ({ currentUser }) => {
   const profileId = currentUser.profile.handle;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <>
@@ -26,7 +28,11 @@ const SideBar = ({ currentUser }) => {
       <NavigationLink to="/bookmarks" icon={<FaBookmark />}>
         Bookmarks
       </NavigationLink>
-      <MeowButton onClick={() => console.log("click")}>Meow</MeowButton>
+      <MeowButton onClick={() => setIsDialogOpen(true)}>Meow</MeowButton>
+      <TweetDialog
+        open={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </>
   );
 };
@@ -93,6 +99,10 @@ const MeowButton = styled.button`
   background-color: ${COLORS.primary};
   border-radius: 20px;
   border: none;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 export default SideBar;

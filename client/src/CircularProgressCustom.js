@@ -1,6 +1,8 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
+const Loading = () => <CircularProgressCustom />;
+
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -18,7 +20,5 @@ const CircularProgressCustom = styled.div`
   border-top-color: #3498db;
   animation: ${rotate} 0.8s linear infinite;
 `;
-
-const Loading = () => <CircularProgressCustom />;
 
 export default Loading;

@@ -45,6 +45,7 @@ const TweetWrapper = styled.div`
   padding: 15px;
 
   width: 100%;
+  border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
   border-left: 1px solid lightgray;
   border-right: 1px solid lightgray;

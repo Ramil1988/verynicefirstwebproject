@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Tweet from "./Tweet";
 import Spinner from "./Spinner";
 import ErrorScreen from "./ErrorScreen";
+import styled from "styled-components";
 
 const TweetDetails = () => {
   const [tweet, setTweet] = useState(null);
@@ -29,10 +30,15 @@ const TweetDetails = () => {
   }
 
   return (
-    <div>
+    <Wrapper>
       <Tweet tweetId={tweetId} tweet={tweet["tweet"]} />
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+margin-top: 20px;
+
+`
 
 export default TweetDetails;
