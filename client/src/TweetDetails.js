@@ -6,23 +6,25 @@ import ErrorScreen from "./ErrorScreen";
 
 const TweetDetails = () => {
   const [tweet, setTweet] = useState(null);
-
   const { tweetId } = useParams();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch(`/api/tweet/${tweetId}`)
       .then((res) => res.json())
       .then((data) => {
         setTweet(data);
+      })
+      .catch(() => {
+        setError(true);
       });
   }, [tweetId]);
 
   if (!tweet) {
     return <Spinner />;
   }
-  console.log(tweet);
 
-  if (!tweet) {
+  if (error) {
     return <ErrorScreen />;
   }
 

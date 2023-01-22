@@ -15,9 +15,9 @@ import Loading from "./CircularProgressCustom";
 import ErrorScreen from "./ErrorScreen";
 
 const App = () => {
-  const { currentUser, status, tweets } = useContext(CurrentUserContext);
+  const { currentUser, status } = useContext(CurrentUserContext);
 
-  if (!currentUser || tweets) {
+  if (!currentUser) {
     return <ErrorScreen />;
   }
 

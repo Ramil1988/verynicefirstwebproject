@@ -13,6 +13,7 @@ import moment from "moment";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const { profileId } = useParams();
 
@@ -23,6 +24,9 @@ const Profile = () => {
       .then((data) => {
         setUser(data);
         setLoading(false);
+      })
+      .catch(() => {
+        setError(true);
       });
   }, [profileId]);
 
@@ -30,7 +34,7 @@ const Profile = () => {
     return <Spinner />;
   }
 
-  if (!user) {
+  if (error) {
     return <ErrorScreen />;
   }
 
@@ -194,12 +198,16 @@ const BarSection = () => {
   const [activeBar, setActiveBar] = useState("Tweets");
   const { profileId } = useParams();
   const [tweets, setTweets] = useState();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch(`/api/${profileId}/feed`)
       .then((res) => res.json())
       .then((data) => {
         setTweets(data);
+      })
+      .catch(() => {
+        setError(true);
       });
   }, []);
 
@@ -212,6 +220,10 @@ const BarSection = () => {
   const handleBarClick = (bar) => {
     setActiveBar(bar);
   };
+
+  if (error) {
+    return <ErrorScreen />;
+  }
 
   return (
     <>
