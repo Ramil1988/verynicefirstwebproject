@@ -52,6 +52,11 @@ const CreateTweet = (props) => {
         console.log(error);
       });
   };
+
+  if (!currentUser) {
+    return <Spinner />;
+  }
+
   return (
     <MainWrapper>
       <CreateTweetWrapper>

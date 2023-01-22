@@ -2,18 +2,27 @@ import { useEffect, useState } from "react";
 
 import Tweet from "./Tweet";
 import CreateTweet from "./CreateTweet";
+import ErrorScreen from "./ErrorScreen";
 
 const HomeFeed = () => {
   const [tweets, setTweets] = useState();
   const [reload, setReload] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch("/api/me/home-feed")
       .then((res) => res.json())
       .then((data) => {
         setTweets(data);
+      })
+      .catch(() => {
+        setError(true);
       });
   }, [reload]);
+
+  if (error) {
+    return <ErrorScreen />;
+  }
 
   return (
     <>

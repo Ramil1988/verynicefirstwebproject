@@ -12,9 +12,14 @@ import GlobalStyles from "./GlobalStyles";
 import SideBar from "./Sidebar";
 import { CurrentUserContext } from "./CurrentUserContext";
 import Loading from "./CircularProgressCustom";
+import ErrorScreen from "./ErrorScreen";
 
 const App = () => {
-  const { currentUser, status } = useContext(CurrentUserContext);
+  const { currentUser, status, tweets } = useContext(CurrentUserContext);
+
+  if (!currentUser || tweets) {
+    return <ErrorScreen />;
+  }
 
   return (
     <>
@@ -48,6 +53,11 @@ const App = () => {
 const MainWrapper = styled.div`
   width: 100vw;
   display: flex;
+`;
+
+const WrapperFoRSpinner = styled.div`
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const LoadingContainer = styled.div`

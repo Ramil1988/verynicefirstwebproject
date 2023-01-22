@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Tweet from "./Tweet";
 import Spinner from "./Spinner";
+import ErrorScreen from "./ErrorScreen";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { COLORS } from "./constants";
 
@@ -27,6 +28,10 @@ const Profile = () => {
 
   if (loading) {
     return <Spinner />;
+  }
+
+  if (!user) {
+    return <ErrorScreen />;
   }
 
   return (

@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 import Tweet from "./Tweet";
 import Spinner from "./Spinner";
+import ErrorScreen from "./ErrorScreen";
 
 const TweetDetails = () => {
   const [tweet, setTweet] = useState(null);
@@ -20,6 +21,10 @@ const TweetDetails = () => {
     return <Spinner />;
   }
   console.log(tweet);
+
+  if (!tweet) {
+    return <ErrorScreen />;
+  }
 
   return (
     <div>

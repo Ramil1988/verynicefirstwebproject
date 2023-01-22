@@ -8,6 +8,7 @@ export const CurrentUserContext = createContext({
 export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState();
   const [status, setStatus] = useState("loading");
+  const [tweets, setTweets] = useState();
 
   useEffect(() => {
     fetch("/api/me/profile")
@@ -18,8 +19,16 @@ export const CurrentUserProvider = ({ children }) => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch("/api/me/home-feed")
+      .then((res) => res.json())
+      .then((data) => {
+        setTweets(data);
+      });
+  }, []);
+
   return (
-    <CurrentUserContext.Provider value={{ currentUser, status }}>
+    <CurrentUserContext.Provider value={{ currentUser, status, tweets }}>
       {children}
     </CurrentUserContext.Provider>
   );
