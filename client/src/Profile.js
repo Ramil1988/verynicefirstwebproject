@@ -210,7 +210,7 @@ const BarSection = () => {
       .catch(() => {
         setError(true);
       });
-  }, []);
+  }, [tweets]);
 
   // useEffect(() => {
   //   if (activeBar !== "Tweets") {
