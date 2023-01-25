@@ -20,8 +20,6 @@ This application includes the following features:
 
 ### View a single tweet
 
-![Single tweet view](./assets/screenshots/single-tweet-view.png)
-
 When the user navigates to `/tweet/:tweetId`, they should see the details for the specified tweet.
 
 ---
@@ -30,15 +28,12 @@ When the user navigates to `/tweet/:tweetId`, they should see the details for th
 
 When navigating to the root URL `/`, the user should see a list of tweets from the accounts that the current user follows.
 
-![Home feed view](./assets/screenshots/index-view.gif)
-
 ---
 
 ### View a profile page
 
 When navigating to `/:profileId`, information about that user is displayed, above a list of that user's tweets (and retweets):
 
-![Home feed view](./assets/screenshots/profile-view.png)
 
 ---
 
@@ -46,7 +41,6 @@ When navigating to `/:profileId`, information about that user is displayed, abov
 
 When clicking the "like" button, it should increment the # of likes. Clicking again should "unlike" the tweet.
 
-![liking tweets](./assets/screenshots/like-tweet.gif)
 
 ---
 
@@ -54,7 +48,6 @@ When clicking the "like" button, it should increment the # of likes. Clicking ag
 
 On the homepage, the user should be able to create a new tweet by writing in the box and clicking "Meow":
 
-![Posting a new tweet](./assets/screenshots/post-tweet.gif)
 
 It should show up in the feed below after posting.
 
@@ -85,7 +78,6 @@ Certain requests will fail 5% of the time. The API endpoints that can fail are:
 
 For the GET endpoints, you can create an error screen, and show it if the request fails:
 
-![Failure screen](./assets/screenshots/failure.png)
 
 The "bomb" icon is imported from the "noto emoji" collection, in react-icons:
 
@@ -99,7 +91,6 @@ This way you'll get an error every time, which can be helpful when developing.
 
 The initial loading experience should look something like this:
 
-![Spinners shown during loading](./assets/screenshots/loading-states.gif)
 
 Note that there are two separate spinners shown.
 
