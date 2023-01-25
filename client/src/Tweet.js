@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 import moment from "moment";
 
 const Tweet = (props) => {
-  const { tweetId, tweet } = props;
+  const { tweetId, tweet, setTweet } = props;
   moment("2021-07-14T00:00:00.000Z").utc().format("YYYY-MM-DD");
 
   if (Object.keys(tweet).length === 0) {
@@ -33,7 +33,7 @@ const Tweet = (props) => {
           <TweetImg src={tweet?.media[0]?.url} alt="Tweet Image" />
         )}
       </TweetTextImageWrapper>
-      <TweetIcons tweet={tweet} />
+      <TweetIcons tweet={tweet} tweetId={tweetId} setTweet={setTweet} />
     </TweetWrapper>
   );
 };

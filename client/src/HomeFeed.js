@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useContext } from "react";
+import { useParams } from "react-router";
 
 import Tweet from "./Tweet";
 import CreateTweet from "./CreateTweet";
@@ -9,6 +10,7 @@ import { CurrentUserContext } from "./CurrentUserContext";
 const HomeFeed = () => {
   const { tweets, setTweets, reload } = useContext(CurrentUserContext);
   const [error, setError] = useState(false);
+  const { tweetId } = useParams();
 
   useEffect(() => {
     fetch("/api/me/home-feed")
@@ -19,7 +21,7 @@ const HomeFeed = () => {
       .catch(() => {
         setError(true);
       });
-  }, [reload]);
+  }, [reload, tweetId]);
 
   if (error) {
     return <ErrorScreen />;
@@ -36,6 +38,7 @@ const HomeFeed = () => {
               key={tweetId}
               tweetId={tweetId}
               tweet={tweets.tweetsById[tweetId]}
+              
             />
           ))}
       </div>

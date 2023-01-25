@@ -29,9 +29,11 @@ const TweetDetails = () => {
     return <ErrorScreen />;
   }
 
+  console.log(tweet)
+
   return (
     <Wrapper>
-      <Tweet tweetId={tweetId} tweet={tweet["tweet"]} />
+      <Tweet tweetId={tweetId} tweet={tweet["tweet"]} setTweet={setTweet} />
     </Wrapper>
   );
 };

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 import {
   FaRegComment,
@@ -9,39 +10,36 @@ import {
   FaUpload,
 } from "react-icons/fa";
 
-const TweetIcons = ({ tweet }) => {
-  const [liked, setLiked] = useState(false);
-  const [clicked, setClicked] = useState(0);
-  const [setTweets] = useState();
+const TweetIcons = ({ tweet, tweetId, setTweet }) => {
+  const { reload, setReload } = useContext(CurrentUserContext);
 
   useEffect(() => {
-    fetch("/api/me/home-feed")
+    fetch(`/api/tweet/${tweetId}`)
       .then((res) => res.json())
       .then((data) => {
-        setTweets(data);
-      });
-  }, [clicked]);
+        setTweet(data);
+      })
+      .catch(() => {});
+  }, [reload]);
 
   const handleClick = (e) => {
     e.preventDefault();
-    setLiked(!liked);
-    setClicked(clicked === 0 ? 1 : 0);
-    // tweet.numLikes = clicked;
+    fetch(`/api/tweet/${tweetId}/like`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ like: !tweet.isLiked }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
 
-    // fetch("/api/tweet/:tweetId/like", {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ like: true }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(tweets);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+        setReload(!reload);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -54,8 +52,14 @@ const TweetIcons = ({ tweet }) => {
       </Button>
       <Button onClick={handleClick}>
         <Wrapper>
-          {!liked ? <FaRegHeart color="black" /> : <FaHeart color="red" />}
-          {clicked !== 0 && <TimesClick>{clicked}</TimesClick>}
+          {tweet.isLiked ? (
+            <InnerWrapper>
+              <FaHeart color="red" />
+              <TimesClick>{tweet.numLikes}</TimesClick>
+            </InnerWrapper>
+          ) : (
+            <FaRegHeart color="black" />
+          )}
         </Wrapper>
       </Button>
       <Button>
@@ -77,6 +81,11 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const InnerWrapper = styled.div`
+  align-items: center;
+  display: flex;
+`;
+
 const Button = styled.button`
   background: transparent;
   border: none;
@@ -90,10 +99,9 @@ const Button = styled.button`
 
 const TimesClick = styled.p`
   color: gray;
-  padding-left: 40px;
   font-size: 25px;
+  padding-left: 40px;
   position: absolute;
-  display: ${(props) => (props.clicked === 0 ? "none" : "block")};
 `;
 
 export default TweetIcons;

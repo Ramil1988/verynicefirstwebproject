@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import Tweet from "./Tweet";
 import Spinner from "./Spinner";
@@ -211,6 +212,8 @@ const BarSection = () => {
         setError(true);
       });
   }, [tweets]);
+
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (activeBar !== "Tweets") {
